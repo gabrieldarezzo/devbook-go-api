@@ -6,15 +6,16 @@ import (
 	response "api/src"
 	"api/src/models"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 // CreateUser Create a User
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	bodyRequest, erro := ioutil.ReadAll(r.Body)
-	// fmt.Println("Corpo da solicitação:", string(bodyRequest))
 
 	if erro != nil {
 		response.ErroJSON(w, http.StatusUnprocessableEntity, erro)
@@ -40,29 +41,52 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	repositoryUser := repositories.NewRepositoryOfUsers(db)
 	user.ID, erro = repositoryUser.CreateUser(user)
-	user.Password = "***"
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
 	}
+	user.Password = "***"
 	response.JSON(w, http.StatusCreated, user)
 }
 
-// FindUsers Encontra um
+// FindUsers Show a couple of users
 func FindUsers(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Buscando todos os Usuário!"))
+	nameOrNick := strings.ToLower(r.URL.Query().Get("user"))
+	nameOrNick = strings.TrimSpace(nameOrNick)
+
+	if nameOrNick == "" {
+		response.ErroJSON(w, http.StatusInternalServerError, errors.New("O queryParam: 'user' é obrigatório e não pode estar em branco"))
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repositoryUser := repositories.NewRepositoryOfUsers(db)
+	users, erro := repositoryUser.FindUser(nameOrNick)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, users)
 }
 
-// FindUser(w ht
+// FindUser Find one or more user using criteria
 func FindUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Buscando um Usuário!"))
 }
 
-// UpdateUser(w
+// UpdateUser Update User
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Atualizando Usuário!"))
 }
 
-// DeleteUser(w
+// DeleteUser
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Deletando Usuário!"))
 }

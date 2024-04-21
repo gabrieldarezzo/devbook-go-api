@@ -13,7 +13,7 @@ type User struct {
 	Nick      string    `json:"nick,omitempty"`
 	Email     string    `json:"email,omitempty"`
 	Password  string    `json:"password,omitempty"`
-	CreatedAt time.Time `json:"CreatedAt,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 }
 
 // Prepare will calling methods validate and format to santize User

@@ -3,6 +3,7 @@ package repositories
 import (
 	"api/src/models"
 	"database/sql"
+	"fmt"
 )
 
 // Users represent of repository
@@ -18,7 +19,6 @@ func NewRepositoryOfUsers(db *sql.DB) *UsersRepository {
 // CreateUser insert a new user in database
 func (usersRepository UsersRepository) CreateUser(user models.User) (uint64, error) {
 
-	// fmt.Print("\n\n####Pass here!\n")
 	statement, erro := usersRepository.db.Prepare("INSERT INTO users (name, nick, email, password) VALUES (?,?,?,?)")
 
 	if erro != nil {
@@ -37,4 +37,35 @@ func (usersRepository UsersRepository) CreateUser(user models.User) (uint64, err
 	}
 
 	return uint64(lastIDInserted), nil
+}
+
+// FindUsers in DataBase a couple of users math users
+func (usersRepository UsersRepository) FindUser(nameOrNick string) ([]models.User, error) {
+
+	nameOrNick = fmt.Sprintf("%%%s%%", nameOrNick)
+	rows, erro := usersRepository.db.Query("SELECT id, name, nick, email, created_at FROM users WHERE name LIKE ? or nick LIKE ?", nameOrNick, nameOrNick)
+
+	if erro != nil {
+		return nil, erro
+	}
+	defer rows.Close()
+
+	var users []models.User
+
+	for rows.Next() {
+		var user models.User
+		if erro = rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.Email,
+			&user.CreatedAt,
+		); erro != nil {
+			return nil, erro
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
 }

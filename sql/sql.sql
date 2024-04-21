@@ -8,5 +8,5 @@ CREATE TABLE users(
     nick        varchar(250) not null unique,
     email       varchar(250) not null unique,
     password    varchar(250) not null,    
-    CreatedAt   timestamp default current_timestamp()       
+    created_at   timestamp default current_timestamp()       
 )ENGINE=InnoDb;
