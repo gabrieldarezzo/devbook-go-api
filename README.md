@@ -94,3 +94,10 @@ curl --request PUT \
 }'
 ```
 
+# Get DeleteUser/{id}
+```shell
+curl --request DELETE \
+  --url http://localhost:3333/users/1 \
+  --header 'Content-Type: application/json'
+```
+

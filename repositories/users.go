@@ -116,3 +116,14 @@ func (usersRepository UsersRepository) UpdateUserById(userId uint64, userToUpdat
 
 	return nil
 }
+
+// UpdateUserById Update user in DataBase passing his ID
+func (usersRepository UsersRepository) DeleteUser(userId uint64) error {
+
+	_, erro := usersRepository.db.Exec("DELETE FROM users WHERE id = ?", userId)
+	if erro != nil {
+		return erro
+	}
+
+	return nil
+}
