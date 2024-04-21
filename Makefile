@@ -1,5 +1,9 @@
+run:
+	make start
+
 start:
 	go run main.go
+
 up:
 	docker compose up -d
 

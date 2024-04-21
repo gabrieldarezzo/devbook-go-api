@@ -61,9 +61,19 @@ curl -X POST \
 }'
 ```
 
-# Get User (Filtered)
+# Get User (Filtered by Criteria)
 ```shell
 curl  http://localhost:3333/users/user\?darezzo
 # ====
 curl  http://localhost:3333/users\?user\=darezzo | jq
+
+curl  http://localhost:3333/users\?user\=no+exists | jq
+```
+
+
+# Get User/{id}
+```shell
+curl  http://localhost:3333/users/1
+# ====
+curl  http://localhost:3333/users/3 | jq
 ```

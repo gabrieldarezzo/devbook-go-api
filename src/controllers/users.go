@@ -9,7 +9,10 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 // CreateUser Create a User
@@ -78,7 +81,31 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 
 // FindUser Find one or more user using criteria
 func FindUser(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Buscando um Usuário!"))
+
+	params := mux.Vars(r)
+
+	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
+
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repositoryUser := repositories.NewRepositoryOfUsers(db)
+	user, erro := repositoryUser.FindUserById(userId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, user)
 }
 
 // UpdateUser Update User

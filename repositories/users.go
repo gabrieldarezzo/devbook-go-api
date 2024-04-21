@@ -39,7 +39,7 @@ func (usersRepository UsersRepository) CreateUser(user models.User) (uint64, err
 	return uint64(lastIDInserted), nil
 }
 
-// FindUsers in DataBase a couple of users math users
+// FindUser in DataBase a couple of users math users
 func (usersRepository UsersRepository) FindUser(nameOrNick string) ([]models.User, error) {
 
 	nameOrNick = fmt.Sprintf("%%%s%%", nameOrNick)
@@ -68,4 +68,30 @@ func (usersRepository UsersRepository) FindUser(nameOrNick string) ([]models.Use
 	}
 
 	return users, nil
+}
+
+// FindUserById in DataBase a couple of users math users
+func (usersRepository UsersRepository) FindUserById(userId uint64) (models.User, error) {
+
+	row, erro := usersRepository.db.Query("SELECT id, name, nick, email, created_at FROM users WHERE id = ?", userId)
+
+	if erro != nil {
+		return models.User{}, erro
+	}
+	defer row.Close()
+
+	var user models.User
+	if row.Next() {
+		if erro = row.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.Email,
+			&user.CreatedAt,
+		); erro != nil {
+			return models.User{}, erro
+		}
+	}
+
+	return user, nil
 }
