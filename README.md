@@ -78,3 +78,19 @@ curl  http://localhost:3333/users/1
 # ====
 curl  http://localhost:3333/users/3 | jq
 ```
+
+
+
+# Get UpdateUser/{id}
+```shell
+curl --request PUT \
+  --url http://localhost:3333/users/1 \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "Atualizadinho!",
+  "nick": "gabrieldarezzo",
+  "email": "darezzo.gabriel@example.com",
+  "created_at": "2024-04-21T01:16:27-03:00"
+}'
+```
+

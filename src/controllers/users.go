@@ -115,9 +115,10 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 
 // FindUser Find one or more user using criteria
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
 
+	params := mux.Vars(r)
+
+	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
 	if erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 		return
@@ -129,8 +130,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user models.User
-	if erro = json.Unmarshal(userBodyParams, &user); erro != nil {
+	var userToUpdate models.User
+	if erro = json.Unmarshal(userBodyParams, &userToUpdate); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 	}
 
@@ -142,7 +143,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repositoryUser := repositories.NewRepositoryOfUsers(db)
-	_, erro = repositoryUser.FindUserById(userId)
+	erro = repositoryUser.UpdateUserById(userId, userToUpdate)
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
 		return
