@@ -30,7 +30,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 	}
 
-	if erro = user.Prepare(); erro != nil {
+	if erro = user.Prepare("NEW_USER"); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 		return
 	}
@@ -79,6 +79,11 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, users)
 }
 
+// DeleteUser
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Deletando Usuário!"))
+}
+
 // FindUser Find one or more user using criteria
 func FindUser(w http.ResponseWriter, r *http.Request) {
 
@@ -108,12 +113,40 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, user)
 }
 
-// UpdateUser Update User
+// FindUser Find one or more user using criteria
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Atualizando Usuário!"))
-}
+	params := mux.Vars(r)
+	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
 
-// DeleteUser
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Deletando Usuário!"))
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	userBodyParams, erro := ioutil.ReadAll(r.Body)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	var user models.User
+	if erro = json.Unmarshal(userBodyParams, &user); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repositoryUser := repositories.NewRepositoryOfUsers(db)
+	_, erro = repositoryUser.FindUserById(userId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, nil)
 }

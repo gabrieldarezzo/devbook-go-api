@@ -25,13 +25,13 @@ var routeUsers = []Route{
 		RequiredAuthentication: false,
 	},
 	{
-		URI:                    "/users/{id}",
+		URI:                    "/users/{userId}",
 		Method:                 http.MethodDelete,
 		Function:               controllers.DeleteUser,
 		RequiredAuthentication: false,
 	},
 	{
-		URI:                    "/users/{id}",
+		URI:                    "/users/{userId}",
 		Method:                 http.MethodPut,
 		Function:               controllers.UpdateUser,
 		RequiredAuthentication: false,

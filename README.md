@@ -3,7 +3,8 @@ https://www.udemy.com/course/aprenda-golang-do-zero-desenvolva-uma-aplicacao-com
 
 
 ```go
-fmt.Print("\n####\n####\n####Like a Hurricane!\n####")
+fmt.Print("\n####\n####\n####____\n####\n")
+fmt.Print()
 ```
 
 

@@ -17,8 +17,8 @@ type User struct {
 }
 
 // Prepare will calling methods validate and format to santize User
-func (user *User) Prepare() error {
-	if erro := user.validate(); erro != nil {
+func (user *User) Prepare(stage string) error {
+	if erro := user.validate(stage); erro != nil {
 		return erro
 	}
 
@@ -26,7 +26,7 @@ func (user *User) Prepare() error {
 	return nil
 }
 
-func (user *User) validate() error {
+func (user *User) validate(stage string) error {
 	if user.Name == "" {
 		return errors.New("O campo: 'name' é obrigatório e não pode estar em branco")
 	}
@@ -39,7 +39,7 @@ func (user *User) validate() error {
 		return errors.New("O campo: 'email' é obrigatório e não pode estar em branco")
 	}
 
-	if user.Password == "" {
+	if stage == "NEW_USER" && user.Password == "" {
 		return errors.New("O campo: 'password' é obrigatório e não pode estar em branco")
 	}
 
