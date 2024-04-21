@@ -22,4 +22,6 @@ curl -X POST \
 }'
 ```
 
-
+```go
+fmt.Print("\n####\n####\n####Like a Hurricane!\n####")
+```

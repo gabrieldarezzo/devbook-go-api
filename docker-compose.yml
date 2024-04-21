@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  sampa_db:
-    container_name: sampa_db
+  devbook_db:
+    container_name: devbook_db
     image: mysql:8.0.34
     restart: always
     ports:

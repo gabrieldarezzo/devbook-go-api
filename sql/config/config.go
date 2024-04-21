@@ -29,7 +29,7 @@ func SetEnvs() {
 	StringConnectionDatabase = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_DBNAME"),
+		os.Getenv("DB_DATABASE"),
 	)
 
 }

@@ -17,7 +17,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("Corpo da solicitação:", string(bodyRequest))
 
 	if erro != nil {
-		// log.Fatal(erro)
 		response.ErroJSON(w, http.StatusUnprocessableEntity, erro)
 		return
 	}
@@ -27,18 +26,25 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 	}
 
+	if erro = user.Prepare(); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
 	db, erro := database.Connection()
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
 	}
 	defer db.Close()
 
 	repositoryUser := repositories.NewRepositoryOfUsers(db)
-	userDb, erro := repositoryUser.CreateUser(user)
+	user.ID, erro = repositoryUser.CreateUser(user)
+	user.Password = "***"
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
 	}
-	response.JSON(w, http.StatusCreated, userDb)
+	response.JSON(w, http.StatusCreated, user)
 }
 
 // FindUsers Encontra um
