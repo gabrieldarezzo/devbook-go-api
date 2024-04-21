@@ -9,26 +9,30 @@ import (
 
 // JSON return response in JSON format
 func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
-
-	w.Header().Set("Content-Type", "application/json")
+	// Define o código de status da resposta
 	w.WriteHeader(statusCode)
 
+	// Se os dados forem nil, envie uma resposta vazia
 	if data == nil {
-		w.Write([]byte("{}"))
 		return
 	}
 
+	// Se os dados forem um slice vazio, envie um JSON vazio
 	if reflect.TypeOf(data).Kind() == reflect.Slice {
-		length := reflect.ValueOf(data).Len()
-		if length == 0 {
-
-			w.Write([]byte("{}"))
+		sliceValue := reflect.ValueOf(data)
+		if sliceValue.Len() == 0 {
+			// Envia um JSON vazio
+			_, err := w.Write([]byte("{}"))
+			if err != nil {
+				log.Fatal(err)
+			}
 			return
 		}
 	}
 
-	if erro := json.NewEncoder(w).Encode(data); erro != nil {
-		log.Fatal(erro)
+	// Se não for um slice vazio e não for nil, codifique os dados para JSON e envie-os na resposta
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Fatal(err)
 	}
 }
 

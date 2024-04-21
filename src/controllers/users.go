@@ -110,6 +110,11 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if user.ID == 0 {
+		response.JSON(w, http.StatusNotFound, nil)
+		return
+	}
+
 	response.JSON(w, http.StatusOK, user)
 }
 
@@ -135,6 +140,11 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 	}
 
+	if erro = userToUpdate.Prepare("UPDATE_USER"); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
 	db, erro := database.Connection()
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
@@ -149,5 +159,5 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.JSON(w, http.StatusOK, nil)
+	response.JSON(w, http.StatusNoContent, nil)
 }
