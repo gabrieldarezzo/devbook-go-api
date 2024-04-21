@@ -110,7 +110,7 @@ curl -X POST \
   -d '{
     "name": "Junior",
     "nick": "junior-date",
-    "email": "EmailInvalido",
+    "email": "EmailInvalido@test.com",
     "password": "pass123"
 }'
 ```

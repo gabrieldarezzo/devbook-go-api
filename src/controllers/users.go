@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"api/database"
-	"api/repositories"
 	response "api/src"
+	"api/src/database"
 	"api/src/models"
+	"api/src/repositories"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
