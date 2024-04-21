@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"api/src/middlewares"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -18,11 +19,14 @@ func SetRoutes(r *mux.Router) *mux.Router {
 	routes := routeUsers
 	routes = append(routes, routeLogin)
 
-	// fmt.Printf("%v\n", routes)
-	// spew.Dump(routes)
+	for _, route := range routes {
 
-	for _, userRoute := range routes {
-		r.HandleFunc(userRoute.URI, userRoute.Function).Methods(userRoute.Method)
+		if route.RequiredAuthentication {
+			r.HandleFunc(route.URI, middlewares.Logger(middlewares.Authenticate(route.Function))).Methods(route.Method)
+		} else {
+
+			r.HandleFunc(route.URI, middlewares.Logger(route.Function)).Methods(route.Method)
+		}
 	}
 
 	return r

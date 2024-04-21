@@ -49,7 +49,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, _ := authentication.CreateToken(userInDatabase.ID)
+	token, erro := authentication.CreateToken(userInDatabase.ID)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
 
 	response.JSON(w, http.StatusOK, token)
 
