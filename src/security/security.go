@@ -8,6 +8,6 @@ func GenerateHash(password string) ([]byte, error) {
 }
 
 // CheckPassword compare password and hashString and return if they are equals
-func CheckPassword(passwordHashed, passwordString string) error {
+func CheckPassword(passwordHashed string, passwordString string) error {
 	return bcrypt.CompareHashAndPassword([]byte(passwordHashed), []byte(passwordString))
 }

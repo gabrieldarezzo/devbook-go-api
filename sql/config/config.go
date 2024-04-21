@@ -12,6 +12,8 @@ import (
 var (
 	StringConnectionDatabase = ""
 	Port                     = 0
+	// SecretKey its key to signate JWT token
+	SecretKey []byte
 )
 
 // SetEnvs load variables of enviroment
@@ -32,4 +34,5 @@ func SetEnvs() {
 		os.Getenv("DB_DATABASE"),
 	)
 
+	SecretKey = []byte(os.Getenv("SECRET_JWT"))
 }

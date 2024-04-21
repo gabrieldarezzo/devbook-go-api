@@ -28,6 +28,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	if erro = json.Unmarshal(bodyRequest, &user); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
 	}
 
 	if erro = user.Prepare("NEW_USER"); erro != nil {

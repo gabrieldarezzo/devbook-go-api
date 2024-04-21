@@ -5,6 +5,10 @@ https://www.udemy.com/course/aprenda-golang-do-zero-desenvolva-uma-aplicacao-com
 ```go
 fmt.Print("\n####\n####\n####____\n####\n")
 fmt.Print()
+
+
+# Ou caso queira, é possivel usar esse 'Dumper': 
+spew.Dump(x)
 ```
 
 
@@ -34,8 +38,8 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -d '{
     "name": "Gabriel Sousa Darezzo",
-    "nick": "gabrieldarezzo2",
-    "email": "darezzo.gabriel2@example.com",
+    "nick": "gabriel.darezzo",
+    "email": "darezzo.gabriel@gmail.com",
     "password": "pass123"
 }'
 
@@ -115,6 +119,17 @@ curl -X POST \
 }'
 ```
 
+
+# Post InvalidEmail
+```shell
+curl -X POST \
+  http://localhost:3333/users/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "darezzo.gabriel@gmail.com",
+    "password": "pass123"
+}'
+```
 
 
 
