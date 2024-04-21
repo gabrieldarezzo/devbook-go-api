@@ -101,3 +101,20 @@ curl --request DELETE \
   --header 'Content-Type: application/json'
 ```
 
+
+# Post InvalidEmail
+```shell
+curl -X POST \
+  http://localhost:3333/users \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Junior",
+    "nick": "junior-date",
+    "email": "EmailInvalido",
+    "password": "pass123"
+}'
+```
+
+
+
+
