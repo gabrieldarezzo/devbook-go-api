@@ -152,10 +152,27 @@ func (usersRepository UsersRepository) FindUserByEmail(email string) (models.Use
 	return user, nil
 }
 
-// CreateUser insert a new user in database
+// FallowNewUser a user
 func (usersRepository UsersRepository) FallowNewUser(userId uint64, followIdUser uint64) error {
 
 	statement, erro := usersRepository.db.Prepare("INSERT INTO followers (user_id, follower_id) VALUES (?,?)")
+
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro = statement.Exec(userId, followIdUser); erro != nil {
+		return erro
+	}
+
+	return nil
+}
+
+// UnFollowUser a user
+func (usersRepository UsersRepository) UnFollowUser(userId uint64, followIdUser uint64) error {
+
+	statement, erro := usersRepository.db.Prepare("DELETE FROM followers WHERE user_id = ? AND follower_id = ?")
 
 	if erro != nil {
 		return erro
