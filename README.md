@@ -123,17 +123,20 @@ curl -X POST \
 ```
 
 
-# Post InvalidEmail
+# Post login
 ```shell
 curl -X POST \
-  http://localhost:3333/users/login \
+  http://localhost:3333/login \
   -H 'Content-Type: application/json' \
   -d '{
-    "email": "darezzo.gabriel@gmail.com",
+    "email": "m4z3@gmail.com",
     "password": "pass123"
 }'
 ```
 
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3Njk2NjYsInVzZXJJZCI6M30.uofsj5V82zyxHQR37NRud9i-zfqmXejIqxhhWArIW4A
+```
 
 
 
@@ -160,3 +163,14 @@ curl --request PUT \
   "created_at": "2024-04-21T01:16:27-03:00"
 }'
 ```
+
+# Get FallowUser/{id} (withToken)
+```shell
+curl --request POST \
+  --url http://localhost:3333/users/1 \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3Njk2NjYsInVzZXJJZCI6M30.uofsj5V82zyxHQR37NRud9i-zfqmXejIqxhhWArIW4A'
+```
+
+
+

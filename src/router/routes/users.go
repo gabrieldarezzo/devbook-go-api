@@ -36,4 +36,10 @@ var routeUsers = []Route{
 		Function:               controllers.UpdateUser,
 		RequiredAuthentication: true,
 	},
+	{
+		URI:                    "/users/{userId}/follow",
+		Method:                 http.MethodPost,
+		Function:               controllers.FollowUser,
+		RequiredAuthentication: true,
+	},
 }
