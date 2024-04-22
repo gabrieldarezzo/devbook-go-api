@@ -133,3 +133,13 @@ curl -X POST \
 
 
 
+
+# GET users/user=darezzo (withToken)
+```shell
+curl --request GET \
+  --url 'http://localhost:3333/users?user=darezzo' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3NjU5MjQsInVzZXJJZCI6N30.bR_d--YqCxtY6HehGM4cQcwnSiZDpPQVtw5JXIAVNrA' \
+  --header 'Content-Type: application/json'
+```
+
+
