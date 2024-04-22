@@ -2,6 +2,7 @@ package controllers
 
 import (
 	response "api/src"
+	"api/src/authentication"
 	"api/src/database"
 	"api/src/models"
 	"api/src/repositories"
@@ -122,6 +123,17 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
 	if erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	userIdToken, erro := authentication.ExtractUserId(r)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusUnauthorized, erro)
+		return
+	}
+
+	if userIdToken != userId {
+		response.ErroJSON(w, http.StatusForbidden, errors.New("Não é possivel atualizar um usuario que não é seu"))
 		return
 	}
 

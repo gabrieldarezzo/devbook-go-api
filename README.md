@@ -143,3 +143,17 @@ curl --request GET \
 ```
 
 
+
+# Get UpdateUser/{id} (withToken)
+```shell
+curl --request PUT \
+  --url http://localhost:3333/users/1 \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3NjU5MjQsInVzZXJJZCI6N30.bR_d--YqCxtY6HehGM4cQcwnSiZDpPQVtw5JXIAVNrA' \
+  --data '{
+  "name": "Atualizadinho!",
+  "nick": "gabrieldarezzo",
+  "email": "darezzo.gabriel@example.com",
+  "created_at": "2024-04-21T01:16:27-03:00"
+}'
+```
