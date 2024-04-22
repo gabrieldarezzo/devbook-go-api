@@ -101,9 +101,12 @@ curl --request PUT \
 # Get DeleteUser/{id}
 ```shell
 curl --request DELETE \
-  --url http://localhost:3333/users/1 \
+  --url http://localhost:3333/users/7 \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3NjU5MjQsInVzZXJJZCI6N30.bR_d--YqCxtY6HehGM4cQcwnSiZDpPQVtw5JXIAVNrA' \
   --header 'Content-Type: application/json'
 ```
+
+
 
 
 # Post InvalidEmail
