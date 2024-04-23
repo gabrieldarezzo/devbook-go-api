@@ -28,11 +28,14 @@ func SetEnvs() {
 		Port = 3333
 	}
 
-	StringConnectionDatabase = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",
+	StringConnectionDatabase = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
 		os.Getenv("DB_DATABASE"),
 	)
+
+	fmt.Println(StringConnectionDatabase)
 
 	SecretKey = []byte(os.Getenv("SECRET_JWT"))
 }
