@@ -185,3 +185,40 @@ func (usersRepository UsersRepository) UnFollowUser(userId uint64, followIdUser 
 
 	return nil
 }
+
+// FollowersOfByUserId Get all followers of a user
+func (usersRepository UsersRepository) FollowersOfByUserId(userId uint64) ([]models.User, error) {
+	rows, erro := usersRepository.db.Query(`
+		select 
+			uf.id,
+			uf.name,
+			uf.nick,
+			uf.created_at
+		from 
+		followers 
+		inner join users uf on (
+			followers.follower_id = uf.id
+		)
+		where followers.user_id = ?
+	`, userId)
+	if erro != nil {
+		return nil, erro
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		if erro = rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.CreatedAt,
+		); erro != nil {
+			return nil, erro
+		}
+
+		users = append(users, user)
+	}
+	return users, nil
+}

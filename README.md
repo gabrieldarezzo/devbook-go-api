@@ -1,5 +1,5 @@
 API baseado no curso:  
-https://www.udemy.com/course/aprenda-golang-do-zero-desenvolva-uma-aplicacao-completa/  
+https://www.udemy.com/course/aprenda-golang-do-zero-desenvolva-uma-aplicacao-completa/learn/lecture/22117390#questions/12582678
 
 
 ```go
@@ -166,10 +166,10 @@ curl --request PUT \
 
 # Get FallowUser/{id} (withToken)
 ```shell
-curl --request POST \
-  --url http://localhost:3333/users/1 \
-  --header 'Content-Type: application/json' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3Njk2NjYsInVzZXJJZCI6M30.uofsj5V82zyxHQR37NRud9i-zfqmXejIqxhhWArIW4A'
+curl --request GET \
+  --url 'http://localhost:3333/users/1/followers?user=darezzo' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM4OTI3NTksInVzZXJJZCI6M30.VEAb-Fvwz9sTPXCnVTmAL_fFWgNN2tFlsQm9hqKX3qc' \
+  --header 'Content-Type: application/json'
 ```
 
 

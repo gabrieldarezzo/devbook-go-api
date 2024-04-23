@@ -22,7 +22,7 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 		sliceValue := reflect.ValueOf(data)
 		if sliceValue.Len() == 0 {
 			// Envia um JSON vazio
-			_, err := w.Write([]byte("{}"))
+			_, err := w.Write([]byte("[]"))
 			if err != nil {
 				log.Fatal(err)
 			}
