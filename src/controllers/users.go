@@ -311,3 +311,31 @@ func GetFollowers(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, followers)
 
 }
+
+// GetFollowing get all following users of specific user
+func GetFollowing(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repositoryUser := repositories.NewRepositoryOfUsers(db)
+	followingsUsers, erro := repositoryUser.GetAllFollowingUsersOfUserId(userId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, followingsUsers)
+
+}

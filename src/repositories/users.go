@@ -222,3 +222,40 @@ func (usersRepository UsersRepository) FollowersOfByUserId(userId uint64) ([]mod
 	}
 	return users, nil
 }
+
+// FollowersOfByUserId Get who a user is fallowing
+func (usersRepository UsersRepository) GetAllFollowingUsersOfUserId(userId uint64) ([]models.User, error) {
+	rows, erro := usersRepository.db.Query(`
+		select 
+			uf.id,
+			uf.name,
+			uf.nick,
+			uf.created_at
+		from 
+		followers 
+		inner join users uf on (
+			followers.user_id = uf.id
+		)
+		where followers.follower_id = ?
+	`, userId)
+	if erro != nil {
+		return nil, erro
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		if erro = rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.CreatedAt,
+		); erro != nil {
+			return nil, erro
+		}
+
+		users = append(users, user)
+	}
+	return users, nil
+}

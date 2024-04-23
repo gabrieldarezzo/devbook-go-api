@@ -167,10 +167,18 @@ curl --request PUT \
 # Get FallowUser/{id} (withToken)
 ```shell
 curl --request GET \
-  --url 'http://localhost:3333/users/1/followers?user=darezzo' \
+  --url 'http://localhost:3333/users/1/followers' \
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM4OTI3NTksInVzZXJJZCI6M30.VEAb-Fvwz9sTPXCnVTmAL_fFWgNN2tFlsQm9hqKX3qc' \
   --header 'Content-Type: application/json'
 ```
 
+
+# Get FollowingUsers/{id} (withToken)
+```shell
+curl --request GET \
+  --url 'http://localhost:3333/users/1/following' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM4OTI3NTksInVzZXJJZCI6M30.VEAb-Fvwz9sTPXCnVTmAL_fFWgNN2tFlsQm9hqKX3qc' \
+  --header 'Content-Type: application/json'
+```
 
 
