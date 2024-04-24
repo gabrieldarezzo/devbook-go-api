@@ -7,20 +7,20 @@ fmt.Print("\n####\n####\n####____\n####\n")
 fmt.Print()
 
 
-# Ou caso queira, é possivel usar esse 'Dumper': 
+## Ou caso queira, é possivel usar esse 'Dumper': 
 spew.Dump(x)
 ```
 
 
 
 
-## GET User
+### GET User
 ```shell
 curl http://localhost:3333/users
 ```
 
 
-## POST User
+### POST User
 ```shell
 curl -X POST \
   http://localhost:3333/users \
@@ -66,26 +66,26 @@ curl -X POST \
 }'
 ```
 
-# Get User (Filtered by Criteria)
+## Get User (Filtered by Criteria)
 ```shell
 curl  http://localhost:3333/users/user\?darezzo
-# ====
+## ====
 curl  http://localhost:3333/users\?user\=darezzo | jq
 
 curl  http://localhost:3333/users\?user\=no+exists | jq
 ```
 
 
-# Get User/{id}
+## Get User/{id}
 ```shell
 curl  http://localhost:3333/users/1
-# ====
+## ====
 curl  http://localhost:3333/users/3 | jq
 ```
 
 
 
-# Get UpdateUser/{id}
+## Get UpdateUser/{id}
 ```shell
 curl --request PUT \
   --url http://localhost:3333/users/1 \
@@ -98,7 +98,7 @@ curl --request PUT \
 }'
 ```
 
-# Get DeleteUser/{id}
+## Get DeleteUser/{id}
 ```shell
 curl --request DELETE \
   --url http://localhost:3333/users/7 \
@@ -109,7 +109,7 @@ curl --request DELETE \
 
 
 
-# Post InvalidEmail
+## Post InvalidEmail
 ```shell
 curl -X POST \
   http://localhost:3333/users \
@@ -123,7 +123,7 @@ curl -X POST \
 ```
 
 
-# Post login
+## Post login
 ```shell
 curl -X POST \
   http://localhost:3333/login \
@@ -140,7 +140,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3Njk
 
 
 
-# GET users/user=darezzo (withToken)
+## GET users/user=darezzo (withToken)
 ```shell
 curl --request GET \
   --url 'http://localhost:3333/users?user=darezzo' \
@@ -150,7 +150,7 @@ curl --request GET \
 
 
 
-# Get UpdateUser/{id} (withToken)
+## Get UpdateUser/{id} (withToken)
 ```shell
 curl --request PUT \
   --url http://localhost:3333/users/1 \
@@ -164,7 +164,7 @@ curl --request PUT \
 }'
 ```
 
-# Get FallowUser/{id} (withToken)
+## Get FallowUser/{id} (withToken)
 ```shell
 curl --request GET \
   --url 'http://localhost:3333/users/1/followers' \
@@ -173,7 +173,7 @@ curl --request GET \
 ```
 
 
-# Get FollowingUsers/{id} (withToken)
+## Get FollowingUsers/{id} (withToken)
 ```shell
 curl --request GET \
   --url 'http://localhost:3333/users/1/following' \
@@ -183,7 +183,7 @@ curl --request GET \
 
 
 
-# Get user/{id}/UpdatePassword (withToken)
+## Get user/{id}/UpdatePassword (withToken)
 ```shell
 curl --request POST \
   --url http://localhost:3333/users/1/update-password \
@@ -192,5 +192,30 @@ curl --request POST \
   --data '{
   "password": "pass12345",
   "new_password": "new_password"
+}'
+```
+
+
+
+
+# Articles  
+
+// id          int auto_increment primary key,
+// title       varchar(100) not null,
+// content     varchar(300) not null,
+// likes       INT default 0,
+// author_id   INT NOT NULL,
+// created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+// FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
+
+## [POST] /articles
+```shell
+curl --request POST \
+  --url http://localhost:3333/articles \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDY3MjIsInVzZXJJZCI6MX0.o8y80wemrKD2uWD7zaX-qlZpCsqdD7GVnDyWQKNyj9s' \
+  --data '{
+  "title": "Construindo um framework em GO, chamado Horse (Go-HORSE)",
+  "content": "TEXT____Construindo um framework em GO, chamado Horse (Go-HORSE)___TEXT"
 }'
 ```
