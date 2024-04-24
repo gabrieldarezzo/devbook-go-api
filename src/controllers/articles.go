@@ -30,6 +30,11 @@ func CreateArticle(w http.ResponseWriter, r *http.Request) {
 	}
 	article.AuthorId = userIdToken
 
+	if erro = article.Prepare(); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
 	db, erro := database.Connection()
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
