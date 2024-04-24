@@ -337,5 +337,57 @@ func GetFollowing(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.JSON(w, http.StatusOK, followingsUsers)
+}
 
+// UpdatePassword Update a password of own user
+func UpdatePassword(w http.ResponseWriter, r *http.Request) {
+	userIdToken, erro := authentication.ExtractUserId(r)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusUnauthorized, erro)
+		return
+	}
+	params := mux.Vars(r)
+
+	userId, erro := strconv.ParseUint(params["userId"], 10, 64)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	if userIdToken != userId {
+		response.ErroJSON(w, http.StatusForbidden, errors.New("não é possível trocar a senha de outra pessoa"))
+		return
+	}
+
+	userBodyParams, erro := ioutil.ReadAll(r.Body)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	var userToUpdate models.User
+	if erro = json.Unmarshal(userBodyParams, &userToUpdate); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+	}
+
+	if erro = userToUpdate.Prepare("UPDATE_USER_PASSWORD"); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repositoryUser := repositories.NewRepositoryOfUsers(db)
+	erro = repositoryUser.UpdatePasswordUserById(userId, userToUpdate)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusNoContent, nil)
 }

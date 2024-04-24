@@ -73,11 +73,6 @@ func (usersRepository UsersRepository) FindUser(nameOrNick string) ([]models.Use
 // FindUserById in DataBase a couple of users math users
 func (usersRepository UsersRepository) FindUserById(userId uint64) (models.User, error) {
 
-	// _, err := usersRepository.db.Exec("UPDATE users SET name = ?, nick = ?, email = ? WHERE id = ?", "Atualizado 44", "gabrieldarezzo", "darezzo.gabriel@example.com", 1)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
 	row, erro := usersRepository.db.Query("SELECT id, name, nick, email, created_at FROM users WHERE id = ?", userId)
 
 	if erro != nil {
@@ -258,4 +253,40 @@ func (usersRepository UsersRepository) GetAllFollowingUsersOfUserId(userId uint6
 		users = append(users, user)
 	}
 	return users, nil
+}
+
+// UpdatePasswordUserById Update user in DataBase passing his ID
+func (usersRepository UsersRepository) UpdatePasswordUserById(userId uint64, userToUpdate models.User) error {
+
+	_, erro := usersRepository.db.Exec("UPDATE users SET password = ? WHERE id = ?",
+		userToUpdate.Password,
+		userId,
+	)
+
+	if erro != nil {
+		return erro
+	}
+
+	return nil
+}
+
+func (usersRepository UsersRepository) GetPaswordByIdUser(userId uint64) (string, error) {
+
+	row, erro := usersRepository.db.Query("SELECT password FROM users WHERE id = ?", userId)
+
+	if erro != nil {
+		return "", erro
+	}
+	defer row.Close()
+
+	var user models.User
+	if row.Next() {
+		if erro = row.Scan(
+			&user.Password,
+		); erro != nil {
+			return "", erro
+		}
+	}
+
+	return user.Password, nil
 }

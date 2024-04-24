@@ -129,7 +129,7 @@ curl -X POST \
   http://localhost:3333/login \
   -H 'Content-Type: application/json' \
   -d '{
-    "email": "m4z3@gmail.com",
+    "email": "darezzo.gabriel@gmail.com",
     "password": "pass123"
 }'
 ```
@@ -144,7 +144,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3Njk
 ```shell
 curl --request GET \
   --url 'http://localhost:3333/users?user=darezzo' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM3NjU5MjQsInVzZXJJZCI6N30.bR_d--YqCxtY6HehGM4cQcwnSiZDpPQVtw5JXIAVNrA' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDExMDIsInVzZXJJZCI6M30.jclhR6Vzq80zU2BihLSyb5LA-kbqlNXmODy0UyGWnT4' \
   --header 'Content-Type: application/json'
 ```
 
@@ -168,7 +168,7 @@ curl --request PUT \
 ```shell
 curl --request GET \
   --url 'http://localhost:3333/users/1/followers' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM4OTI3NTksInVzZXJJZCI6M30.VEAb-Fvwz9sTPXCnVTmAL_fFWgNN2tFlsQm9hqKX3qc' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDExMDIsInVzZXJJZCI6M30.jclhR6Vzq80zU2BihLSyb5LA-kbqlNXmODy0UyGWnT4' \
   --header 'Content-Type: application/json'
 ```
 
@@ -177,8 +177,19 @@ curl --request GET \
 ```shell
 curl --request GET \
   --url 'http://localhost:3333/users/1/following' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM4OTI3NTksInVzZXJJZCI6M30.VEAb-Fvwz9sTPXCnVTmAL_fFWgNN2tFlsQm9hqKX3qc' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDExMDIsInVzZXJJZCI6M30.jclhR6Vzq80zU2BihLSyb5LA-kbqlNXmODy0UyGWnT4' \
   --header 'Content-Type: application/json'
 ```
 
 
+
+# Get FollowingUsers/{id} (withToken)
+```shell
+curl --request POST \
+  --url http://localhost:3333/users/1/update-password \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDIzNTAsInVzZXJJZCI6MX0.Vv9sZSmNp2C7i8vEh-Z_PjGLjLq_UhFWr3jFXp4Ju7w' \
+  --data '{
+  "password": "pass1234"  
+}'
+```
