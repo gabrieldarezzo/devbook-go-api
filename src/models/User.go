@@ -3,7 +3,6 @@ package models
 import (
 	"api/src/security"
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -36,14 +35,8 @@ func (user *User) Prepare(stage string) error {
 // TODO: Refactor with Strategy
 func (user *User) validate(stage string) error {
 
-	if (stage == "UPDATE_USER_PASSWORD" || stage == "NEW_USER") && user.Password == "" {
+	if stage == "NEW_USER" && user.Password == "" {
 		return errors.New("O campo: 'password' é obrigatório e não pode estar em branco")
-	}
-
-	fmt.Println(stage)
-	if stage == "UPDATE_USER_PASSWORD" {
-		fmt.Println("Pulei tudo")
-		return nil
 	}
 
 	if user.Name == "" {
@@ -70,7 +63,7 @@ func (user *User) format(stage string) error {
 	user.Nick = strings.TrimSpace(user.Nick)
 	user.Email = strings.TrimSpace(user.Email)
 
-	if stage == "NEW_USER" || stage == "UPDATE_USER_PASSWORD" {
+	if stage == "NEW_USER" {
 		passwordHashed, erro := security.GenerateHash(user.Password)
 		if erro != nil {
 			return erro

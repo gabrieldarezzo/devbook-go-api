@@ -130,7 +130,7 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -d '{
     "email": "darezzo.gabriel@gmail.com",
-    "password": "pass123"
+    "password": "pass1234"
 }'
 ```
 
@@ -183,13 +183,14 @@ curl --request GET \
 
 
 
-# Get FollowingUsers/{id} (withToken)
+# Get user/{id}/UpdatePassword (withToken)
 ```shell
 curl --request POST \
   --url http://localhost:3333/users/1/update-password \
   --header 'Content-Type: application/json' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDIzNTAsInVzZXJJZCI6MX0.Vv9sZSmNp2C7i8vEh-Z_PjGLjLq_UhFWr3jFXp4Ju7w' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDQ3MjUsInVzZXJJZCI6MX0.p-AuCd8LmP41sasjeAUY1U3Dn6wif5Llu3V3lhm5quY' \
   --data '{
-  "password": "pass1234"  
+  "password": "pass12345",
+  "new_password": "new_password"
 }'
 ```

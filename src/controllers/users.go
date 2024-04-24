@@ -6,6 +6,7 @@ import (
 	"api/src/database"
 	"api/src/models"
 	"api/src/repositories"
+	"api/src/security"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -359,20 +360,15 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userBodyParams, erro := ioutil.ReadAll(r.Body)
+	bodyParams, erro := ioutil.ReadAll(r.Body)
 	if erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 		return
 	}
 
-	var userToUpdate models.User
-	if erro = json.Unmarshal(userBodyParams, &userToUpdate); erro != nil {
+	var password models.Password
+	if erro = json.Unmarshal(bodyParams, &password); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
-	}
-
-	if erro = userToUpdate.Prepare("UPDATE_USER_PASSWORD"); erro != nil {
-		response.ErroJSON(w, http.StatusBadRequest, erro)
-		return
 	}
 
 	db, erro := database.Connection()
@@ -383,7 +379,21 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repositoryUser := repositories.NewRepositoryOfUsers(db)
-	erro = repositoryUser.UpdatePasswordUserById(userId, userToUpdate)
+	passwordHashedInDb, erro := repositoryUser.GetPaswordByIdUser(userId)
+
+	if erro = security.CheckPassword(passwordHashedInDb, password.ActualPassword); erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, errors.New("Senha incorreta"))
+		return
+	}
+
+	newPasswordHashed, erro := security.GenerateHash(password.NewPasword)
+
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, errors.New("Senha incorreta"))
+		return
+	}
+
+	erro = repositoryUser.UpdatePasswordUserById(userId, string(newPasswordHashed))
 	if erro != nil {
 		response.ErroJSON(w, http.StatusInternalServerError, erro)
 		return

@@ -256,10 +256,10 @@ func (usersRepository UsersRepository) GetAllFollowingUsersOfUserId(userId uint6
 }
 
 // UpdatePasswordUserById Update user in DataBase passing his ID
-func (usersRepository UsersRepository) UpdatePasswordUserById(userId uint64, userToUpdate models.User) error {
+func (usersRepository UsersRepository) UpdatePasswordUserById(userId uint64, passwordHashed string) error {
 
 	_, erro := usersRepository.db.Exec("UPDATE users SET password = ? WHERE id = ?",
-		userToUpdate.Password,
+		passwordHashed,
 		userId,
 	)
 
