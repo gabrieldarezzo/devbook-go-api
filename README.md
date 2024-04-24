@@ -1,5 +1,5 @@
 API baseado no curso:  
-https://www.udemy.com/course/aprenda-golang-do-zero-desenvolva-uma-aplicacao-completa/learn/lecture/22117390#questions/12582678
+https://www.udemy.com/course/aprenda-golang-do-zero-desenvolva-uma-aplicacao-completa/learn/lecture/22117412#overview
 
 
 ```go
@@ -218,4 +218,12 @@ curl --request POST \
   "title": "Construindo um framework em GO, chamado Horse (Go-HORSE)",
   "content": "TEXT____Construindo um framework em GO, chamado Horse (Go-HORSE)___TEXT"
 }'
+```
+
+## [GET] /articles
+```shell
+curl --request GET \
+  --url http://localhost:3333/articles/1 \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDY3MjIsInVzZXJJZCI6MX0.o8y80wemrKD2uWD7zaX-qlZpCsqdD7GVnDyWQKNyj9s'
 ```

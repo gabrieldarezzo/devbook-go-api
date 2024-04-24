@@ -15,10 +15,10 @@ func NewRepositoryOfArticles(db *sql.DB) *ArticlesRepository {
 	return &ArticlesRepository{db}
 }
 
-// CreateUser insert a new user in database
-func (articlesRepository ArticlesRepository) CreateArticles(article models.Article) (uint64, error) {
+// CreateArticles insert a new article in database
+func (repository ArticlesRepository) CreateArticles(article models.Article) (uint64, error) {
 
-	statement, erro := articlesRepository.db.Prepare("INSERT INTO articles (title, content, author_id) VALUES (?,?,?)")
+	statement, erro := repository.db.Prepare("INSERT INTO articles (title, content, author_id) VALUES (?,?,?)")
 
 	if erro != nil {
 		return 0, erro
@@ -36,4 +36,48 @@ func (articlesRepository ArticlesRepository) CreateArticles(article models.Artic
 	}
 
 	return uint64(lastIDInserted), nil
+}
+
+// FindArticle
+func (repository ArticlesRepository) FindArticle(articleId uint64) (models.Article, error) {
+
+	row, erro := repository.db.Query(`
+	SELECT 
+		articles.id,
+		title,
+		content,
+		likes,
+		author_id,
+		articles.created_at,
+		users.nick
+	FROM articles 
+	INNER JOIN users ON (
+		articles.author_id = users.id
+	)
+	WHERE 
+		articles.id = ?
+	`, articleId)
+
+	if erro != nil {
+		return models.Article{}, erro
+	}
+	defer row.Close()
+
+	var article models.Article
+	if row.Next() {
+
+		if erro = row.Scan(
+			&article.ID,
+			&article.Title,
+			&article.Content,
+			&article.Likes,
+			&article.AuthorId,
+			&article.CreatedAt,
+			&article.AuthorNick,
+		); erro != nil {
+			return models.Article{}, erro
+		}
+	}
+
+	return article, nil
 }

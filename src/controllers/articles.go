@@ -9,6 +9,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func CreateArticle(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +55,25 @@ func FindArticles(w http.ResponseWriter, r *http.Request) {
 }
 
 func FindArticle(w http.ResponseWriter, r *http.Request) {
-	response.JSON(w, http.StatusOK, nil)
+	params := mux.Vars(r)
+
+	articleId, erro := strconv.ParseUint(params["articleId"], 10, 64)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryOfArticles(db)
+
+	article, erro := repository.FindArticle(articleId)
+	response.JSON(w, http.StatusOK, article)
 }
 
 func UpdateArticle(w http.ResponseWriter, r *http.Request) {
