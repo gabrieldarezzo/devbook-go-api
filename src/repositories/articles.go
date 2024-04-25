@@ -131,22 +131,25 @@ func (repository ArticlesRepository) FindArticles(userId uint64) ([]models.Artic
 	return articles, nil
 }
 
-// CREATE TABLE articles(
-//     id          int auto_increment primary key,
-//     title       varchar(100) not null,
-//     content     varchar(300) not null,
-//     likes       INT default 0,
-//     author_id   INT NOT NULL,
-//     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-//     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
-// ) ENGINE=InnoDB;
-
-// FindArticle
+// UpdateArticle Update a article
 func (repository ArticlesRepository) UpdateArticle(articleId uint64, article models.Article) error {
 
 	_, erro := repository.db.Exec("UPDATE articles SET title = ?, content = ? WHERE id = ?",
 		article.Title,
 		article.Content,
+		articleId,
+	)
+	if erro != nil {
+		return erro
+	}
+
+	return nil
+}
+
+// UpdateArticle Update a article
+func (repository ArticlesRepository) DeleteArticle(articleId uint64) error {
+
+	_, erro := repository.db.Exec("DELETE FROM articles WHERE id = ?",
 		articleId,
 	)
 	if erro != nil {

@@ -170,5 +170,43 @@ func UpdateArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteArticle(w http.ResponseWriter, r *http.Request) {
-	response.JSON(w, http.StatusOK, nil)
+	params := mux.Vars(r)
+	articleId, erro := strconv.ParseUint(params["articleId"], 10, 64)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	userId, erro := authentication.ExtractUserId(r)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusUnauthorized, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryOfArticles(db)
+	articleInDb, erro := repository.FindArticle(articleId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	if userId != articleInDb.AuthorId {
+		response.ErroJSON(w, http.StatusForbidden, errors.New("não é possível excluir um post que não é seu"))
+		return
+	}
+
+	erro = repository.DeleteArticle(articleId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusNoContent, nil)
 }

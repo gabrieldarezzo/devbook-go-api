@@ -236,7 +236,7 @@ curl --request GET \
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTQwNjMzMzAsInVzZXJJZCI6MX0.T5CNHGJMGWVMmhpyNql-XSIsDHI2te3-zWacXggfwn0'
 ```
 
-## [UPDATE] update a article /articles
+## [UPDATE] update a article /articles/{id}
 ```shell
 curl --request PUT \
   --url http://localhost:3333/articles/1 \
@@ -246,4 +246,13 @@ curl --request PUT \
   "title": "Construindo um framework em GO, chamado Horse (Go-HORSE)",
   "content": "TEXT____Construindo um framework em GO, chamado Horse (Go-HORSE)___TEXT"
 }'
+```
+
+
+## [DELETE] delete a article /articles/{id}
+```shell
+curl --request DELETE \
+  --url http://localhost:3333/articles/1 \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTQwNjMzMzAsInVzZXJJZCI6MX0.T5CNHGJMGWVMmhpyNql-XSIsDHI2te3-zWacXggfwn0'
 ```
