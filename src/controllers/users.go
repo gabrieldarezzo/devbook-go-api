@@ -147,6 +147,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var userToUpdate models.User
 	if erro = json.Unmarshal(userBodyParams, &userToUpdate); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
 	}
 
 	if erro = userToUpdate.Prepare("UPDATE_USER"); erro != nil {
@@ -369,6 +370,7 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 	var password models.Password
 	if erro = json.Unmarshal(bodyParams, &password); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
 	}
 
 	db, erro := database.Connection()

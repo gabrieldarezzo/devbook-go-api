@@ -44,7 +44,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if erro = security.CheckPassword(userInDatabase.Password, user.Password); erro != nil {
-		// response.ErroJSON(w, http.StatusUnauthorized, erro)
 		response.ErroJSON(w, http.StatusBadRequest, errors.New("email ou senha não encontrado"))
 		return
 	}

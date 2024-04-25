@@ -35,7 +35,5 @@ func SetEnvs() {
 		os.Getenv("DB_DATABASE"),
 	)
 
-	fmt.Println(StringConnectionDatabase)
-
 	SecretKey = []byte(os.Getenv("SECRET_JWT"))
 }
