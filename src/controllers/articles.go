@@ -235,3 +235,27 @@ func GetAllArticlesFromUser(w http.ResponseWriter, r *http.Request) {
 
 	response.JSON(w, http.StatusOK, articles)
 }
+
+func IncreaseLikeInArticle(w http.ResponseWriter, r *http.Request) {
+	articleId, erro := strconv.ParseUint(mux.Vars(r)["articleId"], 10, 64)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryOfArticles(db)
+	erro = repository.IncreaseLikeInArticle(articleId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, nil)
+}

@@ -42,4 +42,10 @@ var routeArticles = []Route{
 		Function:               controllers.GetAllArticlesFromUser,
 		RequiredAuthentication: true,
 	},
+	{
+		URI:                    "/increase-like-articles/{articleId}",
+		Method:                 http.MethodPost,
+		Function:               controllers.IncreaseLikeInArticle,
+		RequiredAuthentication: true,
+	},
 }

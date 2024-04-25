@@ -199,3 +199,16 @@ func (repository ArticlesRepository) GetAllArticlesFromUser(userId uint64) ([]mo
 
 	return articles, nil
 }
+
+// IncreaseLikeInArticle Increase Like In Article
+func (repository ArticlesRepository) IncreaseLikeInArticle(articleId uint64) error {
+
+	_, erro := repository.db.Exec("UPDATE articles SET likes = (likes + 1) WHERE id = ?",
+		articleId,
+	)
+	if erro != nil {
+		return erro
+	}
+
+	return nil
+}
