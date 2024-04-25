@@ -15,7 +15,7 @@ import (
 )
 
 func CreateArticle(w http.ResponseWriter, r *http.Request) {
-	userIdToken, erro := authentication.ExtractUserId(r)
+	userId, erro := authentication.ExtractUserId(r)
 	if erro != nil {
 		response.ErroJSON(w, http.StatusUnauthorized, erro)
 		return
@@ -31,7 +31,7 @@ func CreateArticle(w http.ResponseWriter, r *http.Request) {
 	if erro = json.Unmarshal(bodyParams, &article); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
 	}
-	article.AuthorId = userIdToken
+	article.AuthorId = userId
 
 	if erro = article.Prepare(); erro != nil {
 		response.ErroJSON(w, http.StatusBadRequest, erro)
@@ -47,11 +47,12 @@ func CreateArticle(w http.ResponseWriter, r *http.Request) {
 
 	repository := repositories.NewRepositoryOfArticles(db)
 	article.ID, erro = repository.CreateArticles(article)
-	response.JSON(w, http.StatusOK, article)
-}
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
 
-func FindArticles(w http.ResponseWriter, r *http.Request) {
-	response.JSON(w, http.StatusOK, nil)
+	response.JSON(w, http.StatusOK, article)
 }
 
 func FindArticle(w http.ResponseWriter, r *http.Request) {
@@ -71,9 +72,38 @@ func FindArticle(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repository := repositories.NewRepositoryOfArticles(db)
-
 	article, erro := repository.FindArticle(articleId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
 	response.JSON(w, http.StatusOK, article)
+}
+
+func FindArticles(w http.ResponseWriter, r *http.Request) {
+
+	userId, erro := authentication.ExtractUserId(r)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusUnauthorized, erro)
+		return
+	}
+
+	db, erro := database.Connection()
+	if erro != nil {
+		response.ErroJSON(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryOfArticles(db)
+	articles, erro := repository.FindArticles(userId)
+	if erro != nil {
+		response.ErroJSON(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, articles)
 }
 
 func UpdateArticle(w http.ResponseWriter, r *http.Request) {

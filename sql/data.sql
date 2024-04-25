@@ -15,3 +15,21 @@ INSERT INTO followers (user_id, follower_id) VALUES (2, 1);
 
 -- select * from users ; 
 -- select * from followers ; 
+
+
+
+INSERT INTO articles (title, content, author_id) 
+VALUES 
+("Titulo de publicação do usuario 1", "Conteudo Conteudo Conteudo Conteudo", 1);
+
+
+
+
+INSERT INTO articles (title, content, author_id) 
+VALUES 
+("Titulo de publicação usuario 2", "Conteudo Conteudo Conteudo Conteudo", 2);
+
+
+INSERT INTO articles (title, content, author_id) 
+VALUES 
+("Titulo de publicação usuario 3", "Conteudo Conteudo Conteudo Conteudo", 3);

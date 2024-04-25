@@ -81,3 +81,52 @@ func (repository ArticlesRepository) FindArticle(articleId uint64) (models.Artic
 
 	return article, nil
 }
+
+// FindArticle
+func (repository ArticlesRepository) FindArticles(userId uint64) ([]models.Article, error) {
+
+	// fmt.Printf("\nGetting articles of who user is following and himself articles: %d\n", userId)
+
+	rows, erro := repository.db.Query(`
+	select 
+		DISTINCT 
+		a.*,
+		u.nick
+	from 
+	followers 
+	inner join users u on (
+		followers.user_id = u.id
+	)
+	inner join articles a on (
+		u.id = a.author_id 
+	)
+	where 
+		followers.follower_id = ?
+		or followers.user_id  = ?
+	order by a.created_at desc
+	`, userId, userId)
+	if erro != nil {
+		return nil, erro
+	}
+	defer rows.Close()
+
+	var articles []models.Article
+	for rows.Next() {
+		var article models.Article
+		if erro = rows.Scan(
+			&article.ID,
+			&article.Title,
+			&article.Content,
+			&article.AuthorId,
+			&article.Likes,
+			&article.CreatedAt,
+			&article.AuthorNick,
+		); erro != nil {
+			return nil, erro
+		}
+
+		articles = append(articles, article)
+	}
+
+	return articles, nil
+}

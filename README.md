@@ -227,3 +227,11 @@ curl --request GET \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTM5NDY3MjIsInVzZXJJZCI6MX0.o8y80wemrKD2uWD7zaX-qlZpCsqdD7GVnDyWQKNyj9s'
 ```
+
+## [GET] GetAll /articles
+```shell
+curl --request GET \
+  --url http://localhost:3333/articles \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTQwNjMzMzAsInVzZXJJZCI6MX0.T5CNHGJMGWVMmhpyNql-XSIsDHI2te3-zWacXggfwn0'
+```
