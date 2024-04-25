@@ -158,3 +158,44 @@ func (repository ArticlesRepository) DeleteArticle(articleId uint64) error {
 
 	return nil
 }
+
+// GetAllArticlesFromUser
+func (repository ArticlesRepository) GetAllArticlesFromUser(userId uint64) ([]models.Article, error) {
+	rows, erro := repository.db.Query(`
+	select 
+		articles.*,
+		u.nick
+	from 
+	articles 
+	inner join users u on (
+		articles.author_id = u.id
+	)
+	where 
+		articles.author_id = ?
+	order by articles.created_at desc
+	`, userId)
+	if erro != nil {
+		return nil, erro
+	}
+	defer rows.Close()
+
+	var articles []models.Article
+	for rows.Next() {
+		var article models.Article
+		if erro = rows.Scan(
+			&article.ID,
+			&article.Title,
+			&article.Content,
+			&article.AuthorId,
+			&article.Likes,
+			&article.CreatedAt,
+			&article.AuthorNick,
+		); erro != nil {
+			return nil, erro
+		}
+
+		articles = append(articles, article)
+	}
+
+	return articles, nil
+}

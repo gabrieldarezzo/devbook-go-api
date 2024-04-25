@@ -36,4 +36,10 @@ var routeArticles = []Route{
 		Function:               controllers.DeleteArticle,
 		RequiredAuthentication: true,
 	},
+	{
+		URI:                    "/users/{userId}/articles",
+		Method:                 http.MethodGet,
+		Function:               controllers.GetAllArticlesFromUser,
+		RequiredAuthentication: true,
+	},
 }
