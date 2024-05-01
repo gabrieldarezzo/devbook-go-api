@@ -1,5 +1,5 @@
 run:
-	make start
+	go run main.go
 
 start:
 	go run main.go
